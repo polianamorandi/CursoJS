@@ -16,6 +16,9 @@
 		<main>
 			<section class="container">
 				<h2>Meus pacientes</h2>
+				<label for="filtrar-tabela">Filtre:</label>
+				<input type="text" name="filtro" id="filtrar-tabela" placeholder="Digite o nome do paciente">
+				
 				<table>
 					<thead>
 						<tr>
@@ -30,7 +33,7 @@
 						<tr class="paciente" id="primeiro-paciente">
 							<td class="info-nome">Paulo</td>
 							<td class="info-peso">100</td>
-							<td class="info-altura">2.00</td>
+							<td class="info-altura">1.95</td>
 							<td class="info-gordura">10</td>
 							<td class="info-imc">0</td>
 						</tr>
@@ -54,7 +57,7 @@
 						<tr class="paciente">
 							<td class="info-nome">Douglas</td>
 							<td class="info-peso">85</td>
-							<td class="info-altura">1.73</td>
+							<td class="info-altura">1.95</td>
 							<td class="info-gordura">24</td>
 							<td class="info-imc">0</td>
 						</tr>
@@ -67,14 +70,18 @@
 						</tr>
 					</tbody>
 				</table>
-
+				<span id="erro-ajax" class="invisivel">Erro ao buscar os pacientes </span>
+				<button id="buscar-pacientes" class="botao bto-principal">Importar paciente</button>
+			
 			</section>
 		</main>
 
 
 		<section class="container">
 			<h2 id="titulo-form">Adicionar novo paciente</h2>
-			<span id="mensagem-erro"></span>
+			<ul id="mensagens-erro">
+
+			</ul>
 			<form id="form-adiciona">
 				<div class="">
 					<label for="nome">Nome:</label>
@@ -103,5 +110,9 @@
 
 		<script src="js/calcula-imc.js"></script>
 		<script src="js/form.js"></script> 
+		<script src="js/remover-pacientes.js"></script>
+		<script src="js/filtra.js"></script>
+		<script src="js/buscar-pacientes.js"></script>
+
 	</body>
 </html>

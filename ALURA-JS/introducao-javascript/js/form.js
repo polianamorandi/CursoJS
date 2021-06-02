@@ -1,33 +1,47 @@
-var botaoAdicionar = document.querySelector("#adicionar-paciente");
+var botaoAdicionar= document.querySelector("#adicionar-paciente");
 botaoAdicionar.addEventListener("click", function(event){
-   event.preventDefault(); /*event.preventDefault não executa o comportamento padrão da função*/
-
-   var form = document.querySelector("#form-adiciona");
-   
-    //extraindo informações do paciente do form
-   var paciente = obtemPacienteDoFormulario(form);
-   
-   var pacienteTr = montaTr(paciente);
-
-   var erros = validaPaciente(paciente);
-   
-
-   if (erros.length > 0){
-        var mensagemErro = document.querySelector("#mensagem-erro");
-        mensagemErro.textContent = erros;
-        return; // return sai da função e nao adiciona na tabela
-
-   }
-
-   var tabela = document.querySelector("#tabela-pacientes");
+    event.preventDefault();
     
-   tabela.appendChild(pacienteTr);
+    var form = document.querySelector("#form-adiciona");
+    var paciente = obtemPacienteDoFormulario(form);
 
-   form.reset();
+    var erros = validaPaciente(paciente);
+    console.log(erros);
+    if (erros.length > 0){
+        exibeMensagensDeErro(erros);
+        return;
+    }
+
+    adicionaPacienteNaTabela(paciente);
+
+    form.reset();
+    var mensagensErro = document.querySelector ("#mensagens-erro");
+    mensagensErro.innerHTML = "";
+
+
 });
 
-function obtemPacienteDoFormulario (form){
-    var paciente = {  // objeto que retorna os dados do paciente
+function adicionaPacienteNaTabela(paciente){
+    var pacienteTr = montaTr(paciente);
+    var tabela = document.querySelector("#tabela-pacientes");
+    tabela.appendChild(pacienteTr);
+
+}
+
+function exibeMensagensDeErro(erros){
+    var ul = document.querySelector("#mensagens-erro");
+    ul.innerHTML = "";
+
+    erros.forEach(function(erro){
+        var li = document.createElement("li");
+        li.textContent = erro;
+        ul.appendChild(li);
+
+    });
+}
+
+function obtemPacienteDoFormulario(form){
+    var paciente = {
         nome: form.nome.value,
         peso: form.peso.value,
         altura: form.altura.value,
@@ -37,11 +51,11 @@ function obtemPacienteDoFormulario (form){
     return paciente;
 }
 
-function montaTr (paciente){
-    var pacienteTr = document.createElement("tr"); // cria a tr
-    pacienteTr.classList.add("paciente"); // coloca uma classe na tr - classe paciente
-    
-    pacienteTr.appendChild(montaTd(paciente.nome, "info-nome")); /* appendChild - função significar "colocar como filho/anexar filho"  em cada tr */
+function montaTr(paciente){
+    var pacienteTr = document.createElement("tr"); // CRIA A TR
+    pacienteTr.classList.add("paciente"); // Coloca a classe "paciente na TR"
+
+    pacienteTr.appendChild(montaTd(paciente.nome, "info-nome")); // para cada tr cria um filho com a função montaTr e alimenta com a classe "info-..."
     pacienteTr.appendChild(montaTd(paciente.peso, "info-peso"));
     pacienteTr.appendChild(montaTd(paciente.altura, "info-altura"));
     pacienteTr.appendChild(montaTd(paciente.gordura, "info-gordura"));
@@ -50,22 +64,40 @@ function montaTr (paciente){
     return pacienteTr;
 }
 
-function montaTd (dado,classe){
+function montaTd(dado,classe){
     var td = document.createElement("td");
     td.textContent = dado;
-    td.classList.add("classe");
-    return td;  
+    td.classList.add(classe);
+
+    return td;
 }
 
-function validaPaciente(paciente){
+function validaPaciente (paciente){
+
     var erros = [];
-    
-    if (!validaPeso(paciente.peso))  {
-        erro.push("O peso é inválido!");
+
+    if (paciente.nome.length == 0){
+        erros.push("Informe o nome do paciente");
+    }
+
+    if (paciente.peso.length == 0){
+        erros.push("Informe o peso do paciente");
+    }
+
+    if(paciente.altura.length == 0){
+        erros.push("Informe a altura do paciente");
+    }
+
+    if (paciente.gordura.length == 0){
+        erros.push("Informe a porcentagem de gordura");
     }
     
+    if (!validaPeso(paciente.peso)){   
+        erros.push("O peso é inválido!");
+    }   
+    
     if (!validaAltura(paciente.altura)){
-        erro.push("A altura é inválida!");
+        erros.push("A altura é inválida!");
     }
 
     return erros;
